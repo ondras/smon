@@ -18,8 +18,7 @@ exports.run = function(results, config) {
 	options.method = config.method;
 
 	let provider = (config.url.match(/^https/i) ? https : http);
-	let request = provider.request(options, response => {
-	});
+	let request = provider.request(options, response => {});
 
 	request.on("error", e => console.error(e));
 	request.end();
