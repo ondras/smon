@@ -4,8 +4,12 @@
 
 const exec = require("child_process").exec;
 const format = require("../format");
+const template = `Failed probes:
 
-exports.run = function(failures, successes, config) {
+{{failed-verbose}}`;
+
+exports.run = function(results, config) {
+	let failures = results.filter(r => r.type == "failure");
 	if (!failures.length) { return; }
 
 	let lines = [];
@@ -21,15 +25,11 @@ exports.run = function(failures, successes, config) {
 
 	if (config.subject) { lines.push(`Subject: ${config.subject}`); }
 
-	lines.push("Failed probes:");
-
-	failures.forEach(failure => {
-		format.result(failure, config.verbose).forEach(line => lines.push(`\t${line}`));
-		lines.push("");
-	});
+	let str = format.template(template, results);
+	let data = `${lines.join("\n")}\n${str}`;
 
 	let child = exec("sendmail -t");
-	child.stdin.write(lines.join("\n"));
+	child.stdin.write(data);
 	child.stdin.end();
 }
 

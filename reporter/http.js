@@ -6,23 +6,19 @@ const format = require("../format");
 const http = require("http");
 const https = require("https");
 const url = require("url");
+const template = `Failing probes: {{failed-names}}`;
 
-exports.run = function(failures, successes, config) {
+exports.run = function(results, config) {
+	let failures = results.filter(r => r.type == "failure");
 	if (!failures.length) { return; }
 
-	let data = [];
-
-	failures.forEach(failure => {
-		let lines = format.result(failure, false);
-		data = data.concat(lines);
-	});
-
-	let provider = (config.url.match(/^https/i) ? https : http);
-	let u = `${config.url}${encodeURIComponent(data.join(", "))}`;
+	let str = format.template(template, results);
+	let u = `${config.url}${encodeURIComponent(str)}`;
 	let options = url.parse(u);
 	options.method = config.method;
+
+	let provider = (config.url.match(/^https/i) ? https : http);
 	let request = provider.request(options, response => {
-		console.log(response);
 	});
 
 	request.on("error", e => console.error(e));

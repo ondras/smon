@@ -1,16 +1,13 @@
 "use strict";
 
 const format = require("../format");
+const template = `{{failed-count}} probes(s) failed (and {{succeeded-count}} succeeded)
 
-exports.run = function(failures, successes, config) {
-	console.log("%s probe(s) failed (and %s probe(s) succeeded)", failures.length, successes.length);
-	if (!failures.length) { return; }
-	
-	console.log("Failing probes:");
-	failures.forEach(failure => {
-		let lines = format.result(failure, config.verbose);
-		lines.forEach(line => console.log(`\t${line}`));
-		console.log("");
-	});
+Failing probes:
+{{failed-verbose}}`;
+
+exports.run = function(results, config) {
+	let str = format.template(template, results);
+	console.log(str);
 }
 

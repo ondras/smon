@@ -1,13 +1,27 @@
 "use strict";
 
-exports.result = function(result, verbose) {
-	let lines = [];
-	lines.push(result.probe.name);
+exports.template = function(template, results) {
+	let replacements = {};
 
-	if (verbose) {
-		lines.push(`\tProbe data: ${JSON.stringify(result.probe)}`);
-		lines.push(`\tError data: ${JSON.stringify(result.data)}`);
-	}
+	let succeeded = results.filter(r => r.type == "success");
+	let failed = results.filter(r => r.type == "failure");
 
-	return lines;
+	replacements["succeeded-count"] = succeeded.length;
+	replacements["failed-count"] = failed.length;
+
+	replacements["succeeded-names"] = succeeded.map(r => r.probe.name).join(", ");
+	replacements["failed-names"] = failed.map(r => r.probe.name).join(", ");
+
+	replacements["succeeded-verbose"] = succeeded.map(r => {
+		return `${r.probe.name}\n\tProbe data: ${JSON.stringify(r.probe)}`;
+	}).join("\n");
+
+
+	replacements["failed-verbose"] = failed.map(r => {
+		return `${r.probe.name}
+\tProbe data: ${JSON.stringify(r.probe)}
+\tError data: ${JSON.stringify(r.data)}`;
+	}).join("\n");
+	
+	return template.replace(/{{([a-z-]+)}}/g, (match, key) => replacements[key]);
 }

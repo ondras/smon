@@ -25,11 +25,8 @@ function runProbe(probe) {
 	}
 }
 
-function runReporter(reporter, failures, successes) {
-	// merge verbosity with reporter options
-	if (!("verbose" in reporter)) { reporter.verbose = config.verbose; }
-
-	return require(`./reporter/${reporter.type}`).run(failures, successes, reporter);
+function runReporter(reporter, results) {
+	return require(`./reporter/${reporter.type}`).run(results, reporter);
 }
 
 exports.addProbe = function(probe) {
@@ -55,7 +52,5 @@ if (!probes.length) {
 }
 
 Promise.all(probes.map(runProbe)).then(results => {
-	let successes = results.filter(r => r.type == "success");
-	let failures = results.filter(r => r.type == "failure");
-	reporters.forEach(reporter => runReporter(reporter, failures, successes));
+	reporters.forEach(reporter => runReporter(reporter, results));
 });
