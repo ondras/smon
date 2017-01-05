@@ -2,6 +2,21 @@
 
 Simple MONitoring tool
 
+## Features
+
+`smon` includes these probes:
+   - **TCP** for testing TCP connections;
+   - **HTTP** for testing HTTP responses, status codes and response lengths;
+   - **PING** for testing ICMP replies;
+   - **CERT** for validating X.509 certificates and days until their expiration.
+
+The following reporting methods are available:
+   - setting an **exit code**;
+   - logging to a **standard output**;
+   - mailing via **sendmail**;
+   - writing to a **syslog**;
+   - making a **HTTP request** (chat bots and other external tools).
+
 ## Installation
 
 ```
@@ -20,12 +35,27 @@ The configuration API has these methods:
 
 ```js
 require("..").addProbe({ /* probe configuration */ });
-
 require("..").addReporter({ /* reporter configuration */ });
-
 require("..").configure({ /* global options */ });
 ```
 
+A very simple configuration might look like this:
+```js
+var app = require("..");
+
+// make sure this web is reachable
+app.addProbe({
+   type: "http",
+   url: "http://www.example.com/"
+});
+
+// if not, send me an e-mail
+app.addReporter({
+   type: "sendmail",
+   to: "user@example.com",
+   subject: "smon probe failure"
+});
+```
 
 ## Running
 
