@@ -68,3 +68,7 @@ If you have a recent node (6.2+) and your symlinked conffiles are broken, try:
 ```
 node --preserve-symlinks .
 ```
+
+## Why?
+
+I needed something trivial, easy-to-configure, easy-to-hack. `smon` is written in less than 9kB of JS. Also, I needed a new pet project for my *start learning vim again* chore.
