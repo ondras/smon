@@ -15,11 +15,11 @@ exports.run = function(results, config) {
 	let lines = [];
 	if (config.from) { lines.push(`From: ${config.from}`); }
 	
-	[].concat(config.to).forEach(to => {
+	[].concat(config.to || []).forEach(to => {
 		lines.push(`To: ${to}`);
 	});
 	
-	[].concat(config.cc).forEach(cc => {
+	[].concat(config.cc || []).forEach(cc => {
 		lines.push(`Cc: ${cc}`);
 	});
 
