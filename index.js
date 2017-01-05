@@ -5,8 +5,7 @@ const result = require("./result");
 const probes = [];
 const reporters = [];
 const config = {
-	timeout: 1000,
-	verbose: true
+	timeout: 1000
 };
 
 process.on("unhandledRejection", e => {
