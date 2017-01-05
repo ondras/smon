@@ -25,7 +25,7 @@ exports.run = function(results, config) {
 
 	if (config.subject) { lines.push(`Subject: ${config.subject}`); }
 
-	let str = format.template(template, results);
+	let str = format.template(config.template || template, results);
 	let data = `${lines.join("\n")}\n${str}`;
 
 	let child = exec("sendmail -t");

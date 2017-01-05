@@ -12,10 +12,10 @@ exports.run = function(results, config) {
 	let failures = results.filter(r => r.type == "failure");
 	if (!failures.length) { return; }
 
-	let str = format.template(template, results);
+	let str = format.template(config.template || template, results);
 	let u = `${config.url}${encodeURIComponent(str)}`;
 	let options = url.parse(u);
-	options.method = config.method;
+	options.method = config.method; // FIXME POST data
 
 	let provider = (config.url.match(/^https/i) ? https : http);
 	let request = provider.request(options, response => {});

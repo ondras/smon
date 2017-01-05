@@ -7,7 +7,7 @@ Failing probes:
 {{failed-verbose}}`;
 
 exports.run = function(results, config) {
-	let str = format.template(template, results);
+	let str = format.template(config.template || template, results);
 	console.log(str);
 }
 
