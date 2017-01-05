@@ -5,7 +5,7 @@ Simple MONitoring tool
 ## Installation
 
 ```
-git clone git@github.com:ondras/smon.git
+git clone https://github.com/ondras/smon.git
 ```
 
 ## Configuration
