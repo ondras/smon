@@ -44,7 +44,9 @@ try {
 	require("fs").readdirSync(`${__dirname}/conf`).forEach(file => {
 		require(`./conf/${file}`);
 	});
-} catch (e) {}
+} catch (e) {
+	console.log("The `conf/` subdirectory does not exist or is not readable.");
+}
 
 if (!probes.length) {
 	console.log("No configuration found, exiting.\n\nPut some files into the conf/ directory -- or, better yet, put them elsewhere and symlink them to conf/.");
