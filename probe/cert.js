@@ -6,7 +6,14 @@ const result = require("../result");
 exports.run = function(config) {
 	config.name = `Certificate for ${config.host}:${config.port}`;
 	return new Promise(resolve => {
-		let socket = tls.connect({host:config.host, port:config.port, rejectUnauthorized:false});
+		let options = {
+			host: config.host,
+			servername: config.host, // SNI
+			port: config.port,
+			rejectUnauthorized: false
+		};
+		
+		let socket = tls.connect(options);
 		socket.on("secureConnect", () => {
 			let r = null;
 			let cert = socket.getPeerCertificate();

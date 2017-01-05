@@ -46,7 +46,7 @@ try {
 		require(`./conf/${file}`);
 	});
 } catch (e) {
-	console.log("The `conf/` subdirectory does not exist or is not readable.");
+	console.log("The `conf/` subdirectory does not exist or is not readable.", e);
 }
 
 if (!probes.length) {
