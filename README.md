@@ -15,7 +15,7 @@ The following reporting methods are available:
    - logging to a **standard output**;
    - mailing via **sendmail**;
    - writing to a **syslog**;
-   - making a **HTTP request** (chat bots and other external tools).
+   - making an **HTTP request** (chat bots and other external tools).
 
 ## Installation
 
