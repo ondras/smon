@@ -20,6 +20,7 @@ function runProbe(probe) {
 	try {
 		return require(`./probe/${probe.type}`).run(probe);
 	} catch (e) {
+		console.log(e);
 		return Promise.resolve(result.createFailure(probe, e));
 	}
 }
