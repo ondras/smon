@@ -41,6 +41,23 @@ require("..").addReporter({ /* reporter configuration */ });
 require("..").configure({ /* global options */ });
 ```
 
+A very simple configuration might look like this:
+```js
+var app = require("..");
+
+// make sure this web is reachable
+app.addProbe({
+   type: "http",
+   url: "http://www.example.com/"
+});
+
+// if not, send me an e-mail
+app.addReporter({
+   type: "sendmail",
+   to: "user@example.com",
+   subject: "smon probe failure"
+});
+```
 
 ## Running
 
