@@ -2,6 +2,22 @@
 
 Simple MONitoring tool
 
+## Features
+
+`smon` includes these probes:
+   - **TCP** for testing TCP connections;
+   - **HTTP** for testing HTTP responses, status codes and response lengths;
+   - **PING** for testing ICMP replies;
+   - **CERT** for validating X.509 certificates and days until their expiration.
+  
+ The following reporting methods are available:
+ 
+   - setting an **exit code**;
+   - logging to a **standard output**;
+   - mailing via **sendmail**;
+   - writing to a **syslog**;
+   - making a **HTTP request** (chat bots and other external tools).
+
 ## Installation
 
 ```
