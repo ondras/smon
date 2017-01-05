@@ -32,3 +32,9 @@ require("..").configure({ /* global options */ });
 ```
 node .
 ```
+
+If you have a recent node (6.2+) and your symlinked conffiles are broken, try:
+
+```
+node --preserve-symlinks .
+```
