@@ -35,9 +35,7 @@ The configuration API has these methods:
 
 ```js
 require("..").addProbe({ /* probe configuration */ });
-
 require("..").addReporter({ /* reporter configuration */ });
-
 require("..").configure({ /* global options */ });
 ```
 
