@@ -9,9 +9,8 @@ Simple MONitoring tool
    - **HTTP** for testing HTTP responses, status codes and response lengths;
    - **PING** for testing ICMP replies;
    - **CERT** for validating X.509 certificates and days until their expiration.
-  
- The following reporting methods are available:
- 
+
+The following reporting methods are available:
    - setting an **exit code**;
    - logging to a **standard output**;
    - mailing via **sendmail**;
