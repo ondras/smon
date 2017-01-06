@@ -46,7 +46,8 @@ var app = require("..");
 // make sure this web is reachable
 app.addProbe({
    type: "http",
-   url: "http://www.example.com/"
+   url: "http://www.example.com/",
+   status: 200
 });
 
 // if not, send me an e-mail
