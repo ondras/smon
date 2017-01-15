@@ -18,7 +18,12 @@ function runProbe(probe) {
 	if (!("timeout" in probe)) { probe.timeout = config.timeout; }
 
 	try {
-		return require(`./probe/${probe.type}`).run(probe);
+		let p = require(`./probe/${probe.type}`);
+		let ts = Date.now();
+		return p.run(probe).then(result => {
+			result.time = Date.now() - ts;
+			return result;
+		});
 	} catch (e) {
 		console.log(e);
 		return Promise.resolve(result.createFailure(probe, e));

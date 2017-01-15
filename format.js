@@ -9,11 +9,13 @@ exports.template = function(template, results) {
 	replacements["succeeded-count"] = succeeded.length;
 	replacements["failed-count"] = failed.length;
 
-	replacements["succeeded-names"] = succeeded.map(r => r.probe.name).join(", ");
+	replacements["succeeded-names"] = succeeded.map(r => `${r.probe.name} (${r.time}ms)`).join(", ");
 	replacements["failed-names"] = failed.map(r => r.probe.name).join(", ");
 
 	replacements["succeeded-verbose"] = succeeded.map(r => {
-		return `${r.probe.name}\n\tProbe data: ${JSON.stringify(r.probe)}`;
+		return `${r.probe.name}
+\tProbe data: ${JSON.stringify(r.probe)}
+\tTime: ${r.time}`;
 	}).join("\n");
 
 
@@ -25,3 +27,4 @@ exports.template = function(template, results) {
 	
 	return template.replace(/{{([a-z-]+)}}/g, (match, key) => replacements[key]);
 }
+
