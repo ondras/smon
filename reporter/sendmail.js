@@ -28,7 +28,7 @@ exports.run = function(results, config) {
 	let str = format.template(config.template || template, results);
 	let data = `${lines.join("\n")}\n${str}`;
 
-	let child = exec("sendmail -t", {}, console.log);
+	let child = exec("sendmail -t", {}, e => e && console.log(e));
 	child.stdin.on("error", console.log);
 	child.stdin.write(data);
 	child.stdin.end();
