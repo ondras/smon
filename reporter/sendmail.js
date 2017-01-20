@@ -29,7 +29,7 @@ exports.run = function(results, config) {
 	let data = `${lines.join("\n")}\n${str}`;
 
 	let child = exec("sendmail -t", {}, console.log);
-	child.on("error", console.log);
+	child.stdin.on("error", console.log);
 	child.stdin.write(data);
 	child.stdin.end();
 }
