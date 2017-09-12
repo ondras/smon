@@ -3,15 +3,24 @@
 const http = require("http");
 const https = require("https");
 const result = require("../result");
+const url = require("url");
 
 exports.run = function(config) {
 	config.name = `HTTP ${config.url}`;
+	let parsed = url.parse(config.url);
 
-	let provider = (config.url.match(/^https/i) ? https : http);
+	let options = {
+		hostname: parsed.hostname,
+		path: parsed.path
+	}
+	if (parsed.port) { options.port = parsed.port; }
+	if (config.method) { options.method = config.method; }
+
+	let provider = (parsed.protocol == "https:" ? https : http);
 	return new Promise(resolve => {
 		let data = "";
 
-		let request = provider.get(config.url, response => {
+		let request = provider.request(options, response => {
 			let status = response.statusCode;
 			if ("status" in config && config.status != status) {
 				resolve(result.createFailure(config, {status}));
@@ -34,6 +43,8 @@ exports.run = function(config) {
 		request.on("error", e => {
 			resolve(result.createFailure(config, e));
 		});
+
+		request.end();
 	});
 }
 
