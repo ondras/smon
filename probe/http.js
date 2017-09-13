@@ -15,6 +15,7 @@ exports.run = function(config) {
 	}
 	if (parsed.port) { options.port = parsed.port; }
 	if (config.method) { options.method = config.method; }
+	if (config.auth) { options.auth = config.auth; }
 
 	let provider = (parsed.protocol == "https:" ? https : http);
 	return new Promise(resolve => {
@@ -44,7 +45,7 @@ exports.run = function(config) {
 			resolve(result.createFailure(config, e));
 		});
 
-		request.end();
+		request.end(config.data || "");
 	});
 }
 
