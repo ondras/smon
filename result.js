@@ -10,10 +10,11 @@ exports.createTimeoutFailure = function(probe) {
 	return exports.createFailure(probe, {timeout:probe.timeout});
 }
 
-exports.createSuccess = function(probe) {
+exports.createSuccess = function(probe, result) {
 	return {
 		type: "success",
-		probe
+		probe,
+		result
 	}
 }
 

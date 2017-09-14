@@ -15,6 +15,7 @@ exports.template = function(template, results) {
 	replacements["succeeded-verbose"] = succeeded.map(r => {
 		return `${r.probe.name}
 \tProbe data: ${JSON.stringify(r.probe)}
+\tResult: ${r.result}
 \tTime: ${r.time}`;
 	}).join("\n");
 

@@ -34,7 +34,7 @@ exports.run = function(config) {
 				if ("size" in config && data.length < config.size) {
 					resolve(result.createFailure(config, {size:data.length}));
 				}
-				resolve(result.createSuccess(config));
+				resolve(result.createSuccess(config, data));
 			});
 		});
 
