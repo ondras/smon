@@ -13,38 +13,53 @@ process.on("unhandledRejection", e => {
 	process.exitCode = 2;
 });
 
-function runProbe(probe) {
-	// merge timeout with probe options
-	if (!("timeout" in probe)) { probe.timeout = config.timeout; }
-
+function runProbeOnce(probe, conf) {
+	let ts = Date.now();
 	try {
-		let p = require(`./probe/${probe.type}`);
-		let ts = Date.now();
-		return p.run(probe).then(result => {
+		return probe.run(conf).then(result => {
 			result.time = Date.now() - ts;
 			return result;
 		});
 	} catch (e) {
 		console.log(e);
-		return Promise.resolve(result.createFailure(probe, e));
+		return Promise.resolve(result.createFailure(conf, e));
 	}
+}
+
+function runProbe(probeConf) {
+	if (!("timeout" in probeConf)) { probeConf.timeout = config.timeout; } // merge timeout with probe options
+
+	let attempts = probeConf.attempts || config.attempts || 1;
+	let probe;
+
+	try {
+		probe = require(`./probe/${probeConf.type}`);
+	} catch (e) {
+		console.log(e);
+		return Promise.resolve(result.createFailure(probeConf, e));
+	}
+
+	function runWithRetry() {
+		return runProbeOnce(probe, probeConf).then(result => {
+			if (result.type == "failure" && result.data.timeout && attempts > 1) {
+				attempts--;
+				return runWithRetry();
+			} else {
+				return result;
+			}
+		});
+	}
+
+	return runWithRetry();
 }
 
 function runReporter(reporter, results) {
 	return require(`./reporter/${reporter.type}`).run(results, reporter);
 }
 
-exports.addProbe = function(probe) {
-	probes.push(probe);
-}
-
-exports.addReporter = function(reporter) {
-	reporters.push(reporter);
-}
-
-exports.configure = function(cfg) {
-	Object.assign(config, cfg);
-}
+exports.addProbe = function(probe) { probes.push(probe); }
+exports.addReporter = function(reporter) { reporters.push(reporter); }
+exports.configure = function(cfg) { Object.assign(config, cfg); }
 
 try {
 	require("fs").readdirSync(`${__dirname}/conf`).forEach(file => {

@@ -39,6 +39,7 @@ exports.run = function(config) {
 		});
 
 		request.setTimeout(config.timeout, () => {
+			request.abort();
 			resolve(result.createTimeoutFailure(config));
 		});
 
